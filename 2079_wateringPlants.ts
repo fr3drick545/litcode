@@ -48,7 +48,7 @@ function wateringPlants(plants: number[], capacity: number): number {
 			i++;
 		} else {
 			current = capacity;
-			steps += i * 2;
+			steps += (i - 1 + 1) * 2;
 		}
 	}
 
