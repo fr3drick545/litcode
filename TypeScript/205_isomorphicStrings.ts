@@ -24,7 +24,7 @@
  * @param t 
  * @returns 
  */
-const isIsomorphic = function (s, t) {
+const isIsomorphic = function (s: string, t: string) {
 	// isomorphic strings always have the same length
 	if (s.length != t.length) {
 		return false;
