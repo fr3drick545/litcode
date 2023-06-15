@@ -26,6 +26,8 @@ Explanation: Start at the river with a full watering can:
 Steps needed = 1 + 1 + 2 + 3 + 3 + 4 = 14.
  */
 
+// Perf 79% Mem 70%
+
 class Solution {
 public:
     int wateringPlants(const vector<int>& plants, int capacity) {
