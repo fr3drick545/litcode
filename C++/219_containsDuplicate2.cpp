@@ -15,57 +15,86 @@
  * Input: nums = [1,2,3,1,2,3], k = 2
  * Output: false
 */
-use std::collections::HashMap;
-pub fn contains_nearby_duplicate(nums: Vec<i32>, k: i32) -> bool {
-    // Create a new empty set
-    let mut my_set: HashMap<i32, i32> = HashMap::new();
-    
-    for i in 0..nums.len()
-    {
-        if let Some(index) = my_set.get(&nums[i]) // Check if the map includes current num
+
+// Basically same solution as last time.
+// Perf 72% mem 37%
+
+class Solution {
+public:
+    bool containsNearbyDuplicate(vector<int>& nums, int k) {
+
+        int n = nums.size();
+
+        std::unordered_set<int> data;
+
+        for (int i = 0; i < n; i++)
         {
-            if ((i as i32 - index).abs() <= k) 
-            {
+            if (data.count(nums[i]) && abs(i - data[nums[i]]) <= k)
                 return true;
-            }
+
+            data[nums[i]] = i;
         }
 
-        // Insert elements into the set if its not there
-        my_set.insert(nums[i], i as i32);
-    }
-
-    return false;
-}
-
-/** 
- * Best Solution
- * Creates a set with a capacity and operates within that window only.
-*/
-/*
-pub fn contains_nearby_duplicate(nums: Vec<i32>, k: i32) -> bool {
-        let k = k as usize;
-        let mut num_set = HashSet::with_capacity(k);
-        let mut left = 0;
-        let mut right = 0;
-        while (right - left) <= k {
-            if right >= nums.len() {
-                return false;
-            }
-            if !num_set.insert(nums[right]) {
-                return true;
-            }
-            right += 1;
-        }
-        num_set.remove(&nums[left]);
-        left += 1;
-        while right < nums.len() {
-            if !num_set.insert(nums[right]) {
-                return true;
-            }
-            num_set.remove(&nums[left]);
-            left += 1;
-            right += 1;
-        }
         return false;
     }
+};
+
+/* 
+    Sliding Window Solution
+    Perf 28% Mem 96%
+
+class Solution {
+public:
+    bool containsNearbyDuplicate(vector<int>& nums, int k) {
+
+        int n=nums.size();
+        unordered_map<int,int>mp;
+
+        int i=0,j=0;
+
+        while(j<n){
+
+
+           if(mp.count(nums[j])) return true;
+           mp[nums[j]]++;
+
+            if(j-i<k){
+                 j++;  // window size is not hit
+            }
+            else if(abs(j-i)==k){
+                // window size is hit
+                 // remove  frequency of nums[i]
+                 mp[nums[i]]--;
+                 if(mp[nums[i]]==0)mp.erase(nums[i]);
+                 i++;
+                 j++;
+            }
+
+        }//while
+
+       return false;
+    }
+};
  */
+
+/*
+    best solution?
+    perf 91% mem 74% 
+    class Solution {
+public:
+    bool containsNearbyDuplicate(vector<int>& nums, int k) {
+        unordered_map<int, int> mp;
+
+        for (int i = 0; i < nums.size(); i++){
+            if (mp.count(nums[i]) && abs(mp[nums[i]] - i) <= k)
+                return 1;
+
+            mp[nums[i]] = i;
+        }
+
+        return 0;
+
+    }
+};
+
+*/
