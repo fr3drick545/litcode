@@ -32,6 +32,9 @@ pub fn move_zeroes(nums: &mut Vec<i32>) {
     }
 }
 
+/**
+ * Best Solution
+ */
 pub fn move_zeroes(nums: &mut Vec<i32>) {
     let mut z = Vec::new();
     nums.retain(|x| {
