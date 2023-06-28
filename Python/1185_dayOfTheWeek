@@ -1,0 +1,85 @@
+"""
+Given a date, return the corresponding day of the week for that date.
+
+The input is given as three integers representing the day, month and year respectively.
+
+Return the answer as one of the following values {"Sunday", "Monday", "Tuesday", 
+"Wednesday", "Thursday", "Friday", "Saturday"}.
+
+Example 1:
+Input: day = 31, month = 8, year = 2019
+Output: "Saturday"
+
+Example 2:
+Input: day = 18, month = 7, year = 1999
+Output: "Sunday"
+
+Example 3:
+Input: day = 15, month = 8, year = 1993
+Output: "Sunday"
+"""
+
+# My Incorrect Solution
+class Solution(object):
+    def dayOfTheWeek(self, day, month, year):
+        """
+        :type day: int
+        :type month: int
+        :type year: int
+        :rtype: str
+        """
+        days = ("Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday")
+        groundDay = 1
+        groundMonth = 1
+        groundYear = 1971
+        groundDayOfWeek = 4 #Friday
+
+        distInYear = year - groundYear
+        distInMonth = month - groundMonth
+        distInDay = day - groundDay
+
+        numLeapYears = 0
+        for num in range(groundYear, year):
+            if num % 4 == 0:
+                numLeapYears += 1
+
+        daysFromYear = distInYear * 365 + numLeapYears
+
+        daysFromMonth = 0
+        for num in range(groundDay, day):
+            if num == 2:
+                daysFromMonth += 28
+            elif num == 2 and year % 4 == 0:
+                daysFromMonth += 29
+            elif [1,3,5,7,8,10,12].__contains__(num):
+                daysFromMonth += 31
+            elif [4,6,9,11].__contains__(num):
+                daysFromMonth += 30
+
+        numOfDaysForward = (daysFromYear + daysFromMonth + distInDay) / 7
+        numWeekdaysForward = int(numOfDaysForward % 7)
+        weekdaysForward = days[(groundDayOfWeek + numWeekdaysForward) % 7]
+
+        return weekdaysForward
+
+# Best Solution
+"""
+def unknownStartDay(day, month, year):
+		    def hasLeapDay(year):
+			    return 1 if year % 4 == 0 and year % 100 != 0 or year % 400 == 0 else 0		    
+			dayNames = ["Saturday", "Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday"]
+            daysInMonth = [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31]
+            # days since 31, 12, 1970
+            def daysSinceStart(day, month, year):
+                numDays = 0
+                for y in range(year - 1, 1970, -1):
+                    numDays += 365 + hasLeapDay(y)
+                numDays += sum(daysInMonth[:month-1])
+                numDays += day 
+                if month > 2:    
+                    numDays += hasLeapDay(year)
+                return numDays			
+            knownStart = daysSinceStart(14,9,2019)
+            d = daysSinceStart(day, month, year) 
+            return dayNames[ (d - knownStart) % 7]
+"""
